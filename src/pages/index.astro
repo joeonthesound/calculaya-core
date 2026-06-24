@@ -289,6 +289,14 @@ import '../styles/global.css';
       const ADSENSE_CLIENT = 'ca-pub-1139932991314618';
       const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
 
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registrado con éxito:', reg.scope))
+            .catch(err => console.error('Error al registrar el Service Worker:', err));
+        });
+      }
+
       const tabButtons = document.querySelectorAll<HTMLButtonElement>('[data-tab-target]');
       const tabPanels = document.querySelectorAll<HTMLElement>('[data-tab-panel]');
       const form = document.querySelector<HTMLFormElement>('#recibo-form');
