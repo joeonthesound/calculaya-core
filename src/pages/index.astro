@@ -43,6 +43,14 @@ import '../styles/global.css';
           </p>
         </header>
 
+        <button
+          id="install-app-button"
+          class="mb-4 hidden w-full rounded-md border border-[#b9d8cb] bg-[#ecfdf5] px-4 py-3 text-sm font-bold text-[#047857] shadow-sm transition hover:bg-[#d1fae5] focus:outline-none focus:ring-4 focus:ring-[#059669]/20 sm:w-auto"
+          type="button"
+        >
+          📲 Instalar App de Recibos
+        </button>
+
         <div class="my-2 block w-full px-4 text-center lg:hidden">
           <div
             class="relative mx-auto flex h-[50px] w-full max-w-[320px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white"
@@ -286,8 +294,14 @@ import '../styles/global.css';
         };
       };
 
+      type BeforeInstallPromptEvent = Event & {
+        prompt: () => Promise<void>;
+        userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+      };
+
       const ADSENSE_CLIENT = 'ca-pub-1139932991314618';
       const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
+      let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -302,6 +316,7 @@ import '../styles/global.css';
       const form = document.querySelector<HTMLFormElement>('#recibo-form');
       const status = document.querySelector<HTMLParagraphElement>('#form-status');
       const downloadButton = document.querySelector<HTMLButtonElement>('#download-button');
+      const installAppButton = document.querySelector<HTMLButtonElement>('#install-app-button');
       const adContainers = document.querySelectorAll<HTMLElement>('[data-ad-container]');
 
       const setStatus = (message: string, isError = false) => {
@@ -420,6 +435,21 @@ import '../styles/global.css';
           const tabName = button.dataset.tabTarget;
           if (tabName) activateTab(tabName);
         });
+      });
+
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+        deferredPrompt = event as BeforeInstallPromptEvent;
+        installAppButton?.classList.remove('hidden');
+      });
+
+      installAppButton?.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+
+        await deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        installAppButton.classList.add('hidden');
       });
 
       form?.addEventListener('submit', async (event) => {
