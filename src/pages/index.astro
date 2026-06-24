@@ -1,0 +1,463 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>CalculaYa.online</title>
+  </head>
+  <body class="flex min-h-screen flex-col bg-[#f7f7f8] text-[#161713] antialiased">
+    <main class="mx-auto grid w-full max-w-[95%] flex-1 grid-cols-1 items-start gap-8 py-4 lg:grid-cols-[300px_1fr_300px] xl:max-w-[1440px]">
+      <aside
+        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex"
+        data-ad-container
+        data-ad-label="Anuncio Patrocinado - 300x600"
+        data-ad-format-label="300x600"
+      >
+        <ins
+          class="adsbygoogle block h-[600px] w-[300px]"
+          style="display:block"
+          data-ad-client="ca-pub-0000000000000000"
+          data-ad-slot="1000000001"
+          data-ad-format="auto"
+          data-full-width-responsive="false"></ins>
+      </aside>
+
+      <div class="min-w-0">
+        <header class="mb-4 px-1">
+          <p class="text-xs font-semibold uppercase text-[#25636f]">CalculaYa.online</p>
+          <h1 class="mt-2 text-3xl font-bold leading-tight text-[#151812] sm:text-4xl">
+            Herramientas simples para documentos rapidos
+          </h1>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-[#596154] sm:text-base">
+            Genera recibos en PDF desde tu dispositivo y conserva un historial local sin cuentas ni pasos extra.
+          </p>
+        </header>
+
+        <div class="my-2 block w-full px-4 text-center lg:hidden">
+          <div
+            class="mx-auto flex h-[50px] w-full max-w-[320px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white"
+            data-ad-container
+            data-ad-label="Anuncio Patrocinado - 320x50"
+            data-ad-format-label="320x50"
+          >
+            <ins
+              class="adsbygoogle block h-[50px] w-[320px]"
+              style="display:block"
+              data-ad-client="ca-pub-0000000000000000"
+              data-ad-slot="1000000003"
+              data-ad-format="horizontal"
+              data-full-width-responsive="false"></ins>
+          </div>
+        </div>
+
+        <section class="flex flex-col rounded-lg border border-[#dfe4d5] bg-white shadow-sm">
+          <div
+            class="grid grid-cols-3 gap-1 border-b border-[#e2e5ea] bg-[#eef1f4] p-1"
+            role="tablist"
+            aria-label="Herramientas de CalculaYa"
+          >
+            <button
+              class="tab-button rounded-md bg-white px-2 py-3 text-center text-xs font-bold text-[#1d2419] shadow-sm transition sm:text-sm"
+              type="button"
+              role="tab"
+              id="tab-documentoya"
+              aria-controls="panel-documentoya"
+              aria-selected="true"
+              data-tab-target="documentoya"
+            >
+              DocumentoYa
+            </button>
+            <button
+              class="tab-button rounded-md px-2 py-3 text-center text-xs font-bold text-[#66705f] transition hover:bg-white/70 sm:text-sm"
+              type="button"
+              role="tab"
+              id="tab-extractolimpio"
+              aria-controls="panel-extractolimpio"
+              aria-selected="false"
+              data-tab-target="extractolimpio"
+            >
+              ExtractoLimpio
+            </button>
+            <button
+              class="tab-button rounded-md px-2 py-3 text-center text-xs font-bold text-[#66705f] transition hover:bg-white/70 sm:text-sm"
+              type="button"
+              role="tab"
+              id="tab-preciocontodo"
+              aria-controls="panel-preciocontodo"
+              aria-selected="false"
+              data-tab-target="preciocontodo"
+            >
+              PrecioConTodo
+            </button>
+          </div>
+
+          <div class="flex-1 p-4 sm:p-6">
+            <section
+              class="tab-panel"
+              role="tabpanel"
+              id="panel-documentoya"
+              aria-labelledby="tab-documentoya"
+              data-tab-panel="documentoya"
+            >
+              <div class="grid grid-cols-1 gap-6 md:grid-cols-[1.2fr_0.8fr]">
+                <form id="recibo-form" class="space-y-4">
+                  <div>
+                    <h2 class="text-xl font-bold text-[#151812]">Generar recibo</h2>
+                    <p class="mt-1 text-sm leading-6 text-[#66705f]">
+                      Completa los datos y descarga un PDF listo para compartir.
+                    </p>
+                  </div>
+
+                  <label class="block">
+                    <span class="text-sm font-semibold text-[#343b2f]">Emisor</span>
+                    <input
+                      class="mt-2 w-full rounded-md border border-[#cfd7c6] bg-white px-4 py-3 text-base outline-none transition placeholder:text-[#9aa292] focus:border-[#25636f] focus:ring-4 focus:ring-[#25636f]/15"
+                      name="emisor"
+                      type="text"
+                      autocomplete="organization"
+                      placeholder="Nombre o negocio"
+                      required
+                    />
+                  </label>
+
+                  <label class="block">
+                    <span class="text-sm font-semibold text-[#343b2f]">Cliente</span>
+                    <input
+                      class="mt-2 w-full rounded-md border border-[#cfd7c6] bg-white px-4 py-3 text-base outline-none transition placeholder:text-[#9aa292] focus:border-[#25636f] focus:ring-4 focus:ring-[#25636f]/15"
+                      name="cliente"
+                      type="text"
+                      autocomplete="name"
+                      placeholder="Persona o empresa"
+                      required
+                    />
+                  </label>
+
+                  <label class="block">
+                    <span class="text-sm font-semibold text-[#343b2f]">Monto</span>
+                    <input
+                      class="mt-2 w-full rounded-md border border-[#cfd7c6] bg-white px-4 py-3 text-base outline-none transition placeholder:text-[#9aa292] focus:border-[#25636f] focus:ring-4 focus:ring-[#25636f]/15"
+                      name="monto"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      inputmode="decimal"
+                      placeholder="0.00"
+                      required
+                    />
+                  </label>
+
+                  <label class="block">
+                    <span class="text-sm font-semibold text-[#343b2f]">Concepto</span>
+                    <textarea
+                      class="mt-2 min-h-28 w-full resize-y rounded-md border border-[#cfd7c6] bg-white px-4 py-3 text-base outline-none transition placeholder:text-[#9aa292] focus:border-[#25636f] focus:ring-4 focus:ring-[#25636f]/15"
+                      name="concepto"
+                      placeholder="Servicio, producto o detalle del pago"
+                      required></textarea>
+                  </label>
+
+                  <button
+                    id="download-button"
+                    class="flex min-h-12 w-full items-center justify-center rounded-md bg-[#243f2b] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#1b3121] focus:outline-none focus:ring-4 focus:ring-[#25636f]/25 disabled:cursor-not-allowed disabled:bg-[#94a18d]"
+                    type="submit"
+                  >
+                    Descargar PDF
+                  </button>
+
+                  <p id="form-status" class="min-h-5 text-sm font-medium text-[#25636f]" aria-live="polite"></p>
+                </form>
+
+                <aside class="rounded-lg border border-[#dfe4d5] bg-[#f9fafb] p-5">
+                  <p class="text-xs font-bold uppercase text-[#25636f]">Historial local</p>
+                  <h2 class="mt-2 text-lg font-bold text-[#151812]">Tus recibos quedan en este dispositivo</h2>
+                  <p class="mt-3 text-sm leading-6 text-[#66705f]">
+                    Cada descarga se registra en IndexedDB con el modulo, tipo, fecha y datos usados para generar el documento.
+                  </p>
+                  <div class="mt-5 rounded-md border border-[#d8ddcf] bg-white p-4">
+                    <p class="text-sm font-semibold text-[#343b2f]">Formato del recibo</p>
+                    <dl class="mt-3 grid grid-cols-2 gap-3 text-sm text-[#66705f]">
+                      <div>
+                        <dt class="font-semibold text-[#343b2f]">Pagina</dt>
+                        <dd>550 x 400</dd>
+                      </div>
+                      <div>
+                        <dt class="font-semibold text-[#343b2f]">Salida</dt>
+                        <dd>PDF</dd>
+                      </div>
+                      <div>
+                        <dt class="font-semibold text-[#343b2f]">Modulo</dt>
+                        <dd>DocumentoYa</dd>
+                      </div>
+                      <div>
+                        <dt class="font-semibold text-[#343b2f]">Guardado</dt>
+                        <dd>Local</dd>
+                      </div>
+                    </dl>
+                  </div>
+                </aside>
+              </div>
+            </section>
+
+            <section
+              class="tab-panel hidden"
+              role="tabpanel"
+              id="panel-extractolimpio"
+              aria-labelledby="tab-extractolimpio"
+              data-tab-panel="extractolimpio"
+            >
+              <div class="grid min-h-[28rem] place-items-center rounded-lg border border-dashed border-[#cfd7c6] bg-[#f9fafb] p-6 text-center">
+                <div class="max-w-sm">
+                  <p class="text-xs font-bold uppercase text-[#25636f]">ExtractoLimpio</p>
+                  <h2 class="mt-3 text-2xl font-bold text-[#151812]">Proximamente</h2>
+                  <p class="mt-3 text-sm leading-6 text-[#66705f]">
+                    Una vista preparada para ordenar extractos y convertir movimientos en informacion util.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section
+              class="tab-panel hidden"
+              role="tabpanel"
+              id="panel-preciocontodo"
+              aria-labelledby="tab-preciocontodo"
+              data-tab-panel="preciocontodo"
+            >
+              <div class="grid min-h-[28rem] place-items-center rounded-lg border border-dashed border-[#cfd7c6] bg-[#f9fafb] p-6 text-center">
+                <div class="max-w-sm">
+                  <p class="text-xs font-bold uppercase text-[#25636f]">PrecioConTodo</p>
+                  <h2 class="mt-3 text-2xl font-bold text-[#151812]">Proximamente</h2>
+                  <p class="mt-3 text-sm leading-6 text-[#66705f]">
+                    Un espacio pensado para calcular precios finales con cargos, costos e impuestos incluidos.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <aside
+        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex"
+        data-ad-container
+        data-ad-label="Anuncio Patrocinado - 300x600"
+        data-ad-format-label="300x600"
+      >
+        <ins
+          class="adsbygoogle block h-[600px] w-[300px]"
+          style="display:block"
+          data-ad-client="ca-pub-0000000000000000"
+          data-ad-slot="1000000002"
+          data-ad-format="auto"
+          data-full-width-responsive="false"></ins>
+      </aside>
+    </main>
+
+    <footer class="border-t border-[#dfe4d5] bg-white px-4 py-4 text-center text-xs font-semibold text-[#596154]">
+      Imaginado y Desarrollado por{' '}
+      <a
+        class="text-[#25636f] underline-offset-4 hover:underline"
+        href="https://josuethacevedo.online"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Joe Codex ❤️
+      </a>
+    </footer>
+
+    <script>
+      import { db } from '../lib/db';
+      import { generateReciboPDF } from '../lib/pdfGenerator';
+
+      type AdsWindow = Window & {
+        adsbygoogle?: unknown[] & {
+          push: (config: Record<string, never>) => number;
+        };
+      };
+
+      const ADSENSE_CLIENT = 'ca-pub-0000000000000000';
+      const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
+
+      const tabButtons = document.querySelectorAll<HTMLButtonElement>('[data-tab-target]');
+      const tabPanels = document.querySelectorAll<HTMLElement>('[data-tab-panel]');
+      const form = document.querySelector<HTMLFormElement>('#recibo-form');
+      const status = document.querySelector<HTMLParagraphElement>('#form-status');
+      const downloadButton = document.querySelector<HTMLButtonElement>('#download-button');
+      const adContainers = document.querySelectorAll<HTMLElement>('[data-ad-container]');
+
+      const setStatus = (message: string, isError = false) => {
+        if (!status) return;
+        status.textContent = message;
+        status.classList.toggle('text-[#9b2f2f]', isError);
+        status.classList.toggle('text-[#25636f]', !isError);
+      };
+
+      const activateTab = (tabName: string) => {
+        tabButtons.forEach((button) => {
+          const isActive = button.dataset.tabTarget === tabName;
+          button.setAttribute('aria-selected', String(isActive));
+          button.classList.toggle('bg-white', isActive);
+          button.classList.toggle('text-[#1d2419]', isActive);
+          button.classList.toggle('shadow-sm', isActive);
+          button.classList.toggle('text-[#66705f]', !isActive);
+          button.classList.toggle('hover:bg-white/70', !isActive);
+        });
+
+        tabPanels.forEach((panel) => {
+          panel.classList.toggle('hidden', panel.dataset.tabPanel !== tabName);
+        });
+      };
+
+      const downloadPDF = (pdfBytes: Uint8Array, filename: string) => {
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = filename;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      };
+
+      const loadAdSense = () =>
+        new Promise<boolean>((resolve) => {
+          if (document.querySelector(`script[src="${ADSENSE_SRC}"]`)) {
+            resolve(true);
+            return;
+          }
+
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = ADSENSE_SRC;
+          script.crossOrigin = 'anonymous';
+          script.onload = () => resolve(true);
+          script.onerror = () => resolve(false);
+          document.head.append(script);
+        });
+
+      const renderMockAd = (container: HTMLElement) => {
+        const label = container.dataset.adLabel ?? 'Anuncio Patrocinado';
+        const formatLabel = container.dataset.adFormatLabel ?? 'Demo';
+
+        container.innerHTML = `
+          <div class="flex h-full w-full flex-col items-center justify-center rounded-lg bg-gray-50 px-4 text-center">
+            <span class="text-xs font-semibold uppercase text-gray-400">Mock Ad</span>
+            <span class="mt-1 text-sm font-bold text-gray-500">${label}</span>
+            <span class="text-xs text-gray-400">${formatLabel}</span>
+          </div>
+        `;
+      };
+
+      const hasRenderedAd = (container: HTMLElement) => {
+        const adElement = container.querySelector<HTMLElement>('ins.adsbygoogle');
+        const iframe = container.querySelector('iframe');
+        const hasAdStatus = adElement?.getAttribute('data-ad-status') === 'filled';
+        const hasContent = Boolean(adElement?.innerHTML.trim() || iframe);
+
+        return hasAdStatus || hasContent;
+      };
+
+      const requestAds = () => {
+        const adsWindow = window as AdsWindow;
+        adsWindow.adsbygoogle = adsWindow.adsbygoogle ?? [];
+
+        adContainers.forEach((container) => {
+          if (container.offsetParent === null) return;
+
+          try {
+            adsWindow.adsbygoogle?.push({});
+          } catch (error) {
+            console.warn('AdSense no respondio para este bloque.', error);
+          }
+        });
+      };
+
+      const initializeAds = () => {
+        loadAdSense().then((loaded) => {
+          if (loaded) {
+            requestAds();
+          }
+        });
+
+        window.setTimeout(() => {
+          adContainers.forEach((container) => {
+            if (!hasRenderedAd(container)) {
+              renderMockAd(container);
+            }
+          });
+        }, 1500);
+      };
+
+      tabButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const tabName = button.dataset.tabTarget;
+          if (tabName) activateTab(tabName);
+        });
+      });
+
+      form?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (!form || !downloadButton) return;
+
+        const formData = new FormData(form);
+        const emisor = String(formData.get('emisor') ?? '').trim();
+        const cliente = String(formData.get('cliente') ?? '').trim();
+        const concepto = String(formData.get('concepto') ?? '').trim();
+        const monto = Number(formData.get('monto'));
+
+        if (!emisor || !cliente || !concepto || !Number.isFinite(monto)) {
+          setStatus('Completa todos los campos para generar el recibo.', true);
+          return;
+        }
+
+        downloadButton.disabled = true;
+        downloadButton.textContent = 'Generando PDF...';
+        setStatus('Preparando descarga...');
+
+        try {
+          const createdAt = new Date();
+          const id = globalThis.crypto?.randomUUID?.() ?? `${createdAt.getTime()}`;
+          const recibo = { emisor, cliente, monto, concepto };
+          const pdfBytes = await generateReciboPDF(recibo);
+          const filename = `recibo-${createdAt.toISOString().slice(0, 10)}.pdf`;
+
+          downloadPDF(pdfBytes, filename);
+
+          await db.documents.add({
+            id,
+            module: 'DocumentoYa',
+            type: 'recibo',
+            createdAt,
+            data: {
+              ...recibo,
+              filename,
+            },
+          });
+
+          form.reset();
+          setStatus('Recibo descargado y guardado en tu historial local.');
+        } catch (error) {
+          console.error(error);
+          setStatus('No se pudo generar el recibo. Intenta nuevamente.', true);
+        } finally {
+          downloadButton.disabled = false;
+          downloadButton.textContent = 'Descargar PDF';
+        }
+      });
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeAds, { once: true });
+      } else {
+        initializeAds();
+      }
+    </script>
+  </body>
+</html>
