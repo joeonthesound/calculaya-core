@@ -16,7 +16,7 @@ import '../styles/global.css';
   <body class="flex min-h-screen flex-col bg-[#f7f7f8] text-[#161713] antialiased">
     <main class="mx-auto grid w-full max-w-[95%] flex-1 grid-cols-1 items-start gap-8 py-4 lg:grid-cols-[300px_1fr_300px] xl:max-w-[1440px]">
       <aside
-        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex"
+        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex relative"
         data-ad-container
         data-ad-label="Anuncio Patrocinado - 300x600"
         data-ad-format-label="300x600"
@@ -24,6 +24,7 @@ import '../styles/global.css';
         <ins
           class="adsbygoogle block h-[600px] w-[300px]"
           style="display:block"
+          data-client="ca-pub-1139932991314618"
           data-ad-client="ca-pub-1139932991314618"
           data-ad-slot="1000000001"
           data-ad-format="auto"
@@ -43,7 +44,7 @@ import '../styles/global.css';
 
         <div class="my-2 block w-full px-4 text-center lg:hidden">
           <div
-            class="mx-auto flex h-[50px] w-full max-w-[320px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white"
+            class="relative mx-auto flex h-[50px] w-full max-w-[320px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white"
             data-ad-container
             data-ad-label="Anuncio Patrocinado - 320x50"
             data-ad-format-label="320x50"
@@ -51,6 +52,7 @@ import '../styles/global.css';
             <ins
               class="adsbygoogle block h-[50px] w-[320px]"
               style="display:block"
+              data-client="ca-pub-1139932991314618"
               data-ad-client="ca-pub-1139932991314618"
               data-ad-slot="1000000003"
               data-ad-format="horizontal"
@@ -245,7 +247,7 @@ import '../styles/global.css';
       </div>
 
       <aside
-        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex"
+        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex relative"
         data-ad-container
         data-ad-label="Anuncio Patrocinado - 300x600"
         data-ad-format-label="300x600"
@@ -253,6 +255,7 @@ import '../styles/global.css';
         <ins
           class="adsbygoogle block h-[600px] w-[300px]"
           style="display:block"
+          data-client="ca-pub-1139932991314618"
           data-ad-client="ca-pub-1139932991314618"
           data-ad-slot="1000000002"
           data-ad-format="auto"
@@ -345,23 +348,29 @@ import '../styles/global.css';
         });
 
       const renderMockAd = (container: HTMLElement) => {
+        const adElement = container.querySelector<HTMLElement>('ins.adsbygoogle');
+        const existingMock = container.querySelector('[data-mock-ad]');
         const label = container.dataset.adLabel ?? 'Anuncio Patrocinado';
         const formatLabel = container.dataset.adFormatLabel ?? 'Demo';
 
-        container.innerHTML = `
-          <div class="flex h-full w-full flex-col items-center justify-center rounded-lg bg-gray-50 px-4 text-center">
+        if (existingMock) return;
+        adElement?.classList.add('hidden');
+
+        container.insertAdjacentHTML('beforeend', `
+          <div class="absolute inset-0 flex h-full w-full flex-col items-center justify-center rounded-lg bg-gray-50 px-4 text-center" data-mock-ad>
             <span class="text-xs font-semibold uppercase text-gray-400">Mock Ad</span>
             <span class="mt-1 text-sm font-bold text-gray-500">${label}</span>
             <span class="text-xs text-gray-400">${formatLabel}</span>
           </div>
-        `;
+        `);
       };
 
       const hasRenderedAd = (container: HTMLElement) => {
         const adElement = container.querySelector<HTMLElement>('ins.adsbygoogle');
         const iframe = container.querySelector('iframe');
         const hasAdStatus = adElement?.getAttribute('data-ad-status') === 'filled';
-        const hasContent = Boolean(adElement?.innerHTML.trim() || iframe);
+        const hasVisibleFrame = Boolean(iframe && iframe.getBoundingClientRect().width > 0 && iframe.getBoundingClientRect().height > 0);
+        const hasContent = Boolean(adElement?.innerHTML.trim() || hasVisibleFrame);
 
         return hasAdStatus || hasContent;
       };
