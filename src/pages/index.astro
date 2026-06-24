@@ -10,9 +10,35 @@ import '../styles/global.css';
     <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Crea, descarga y comparte recibos de pago profesionales en PDF al instante. Sin registros, sin contraseñas y con soporte offline."
+    />
+    <meta property="og:title" content="CalculaYa | Generador de Recibos de Pago Gratis e Instantáneos" />
+    <meta
+      property="og:description"
+      content="¿Necesitas un comprobante rápido? Entra, llena los datos y descarga tu recibo en PDF en 1 segundo. Gratis y sin registrarte."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://calculaya.online/" />
     <meta name="google-adsense-account" content="ca-pub-1139932991314618">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1139932991314618" crossorigin="anonymous"></script>
-    <title>CalculaYa.online</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "CalculaYa",
+        "operatingSystem": "All",
+        "applicationCategory": "BusinessApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD"
+        },
+        "description": "Aplicación web optimizada para la generación inmediata de recibos de pago y comprobantes en formato PDF de forma local y segura."
+      }
+    </script>
+    <title>CalculaYa | Generador de Recibos de Pago Gratis e Instantáneos</title>
   </head>
   <body class="flex min-h-screen flex-col bg-[#f7f7f8] text-[#161713] antialiased">
     <main class="mx-auto grid w-full max-w-[95%] flex-1 grid-cols-1 items-start gap-8 py-4 lg:grid-cols-[300px_1fr_300px] xl:max-w-[1440px]">
@@ -185,34 +211,19 @@ import '../styles/global.css';
                   <p id="form-status" class="min-h-5 text-sm font-medium text-[#25636f]" aria-live="polite"></p>
                 </form>
 
-                <aside class="rounded-lg border border-[#dfe4d5] bg-[#f9fafb] p-5">
-                  <p class="text-xs font-bold uppercase text-[#25636f]">Historial local</p>
-                  <h2 class="mt-2 text-lg font-bold text-[#151812]">Tus recibos quedan en este dispositivo</h2>
-                  <p class="mt-3 text-sm leading-6 text-[#66705f]">
-                    Cada descarga se registra en IndexedDB con el modulo, tipo, fecha y datos usados para generar el documento.
-                  </p>
-                  <div class="mt-5 rounded-md border border-[#d8ddcf] bg-white p-4">
-                    <p class="text-sm font-semibold text-[#343b2f]">Formato del recibo</p>
-                    <dl class="mt-3 grid grid-cols-2 gap-3 text-sm text-[#66705f]">
-                      <div>
-                        <dt class="font-semibold text-[#343b2f]">Pagina</dt>
-                        <dd>550 x 400</dd>
-                      </div>
-                      <div>
-                        <dt class="font-semibold text-[#343b2f]">Salida</dt>
-                        <dd>PDF</dd>
-                      </div>
-                      <div>
-                        <dt class="font-semibold text-[#343b2f]">Modulo</dt>
-                        <dd>DocumentoYa</dd>
-                      </div>
-                      <div>
-                        <dt class="font-semibold text-[#343b2f]">Guardado</dt>
-                        <dd>Local</dd>
-                      </div>
-                    </dl>
+                <section class="rounded-lg border border-[#dfe4d5] bg-[#f9fafb] p-5" aria-labelledby="historial-title">
+                  <p class="text-xs font-bold uppercase text-[#25636f]">Historial de recibos emitidos</p>
+                  <h2 id="historial-title" class="mt-2 text-lg font-bold text-[#151812]">
+                    Últimos comprobantes de pago
+                  </h2>
+                  <div
+                    id="history-empty-state"
+                    class="mt-5 rounded-md border border-dashed border-[#cfd7c6] bg-white p-4 text-sm leading-6 text-[#66705f]"
+                  >
+                    Tu historial aparecerá aquí. Los recibos se guardan de forma segura y privada únicamente en este dispositivo.
                   </div>
-                </aside>
+                  <ul id="history-list" class="mt-5 hidden space-y-3" aria-label="Últimos recibos emitidos"></ul>
+                </section>
               </div>
             </section>
 
@@ -299,6 +310,14 @@ import '../styles/global.css';
         userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
       };
 
+      type StoredReciboData = {
+        emisor: string;
+        cliente: string;
+        monto: number;
+        concepto: string;
+        filename?: string;
+      };
+
       const ADSENSE_CLIENT = 'ca-pub-1139932991314618';
       const ADSENSE_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
       let deferredPrompt: BeforeInstallPromptEvent | null = null;
@@ -317,6 +336,8 @@ import '../styles/global.css';
       const status = document.querySelector<HTMLParagraphElement>('#form-status');
       const downloadButton = document.querySelector<HTMLButtonElement>('#download-button');
       const installAppButton = document.querySelector<HTMLButtonElement>('#install-app-button');
+      const historyEmptyState = document.querySelector<HTMLElement>('#history-empty-state');
+      const historyList = document.querySelector<HTMLUListElement>('#history-list');
       const adContainers = document.querySelectorAll<HTMLElement>('[data-ad-container]');
 
       const setStatus = (message: string, isError = false) => {
@@ -353,6 +374,121 @@ import '../styles/global.css';
         link.click();
         link.remove();
         URL.revokeObjectURL(url);
+      };
+
+      const formatMoney = (amount: number) =>
+        new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(amount);
+
+      const formatReceiptDate = (date: Date) =>
+        new Intl.DateTimeFormat('es-PA', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        }).format(date);
+
+      const getStoredReciboData = (data: unknown): StoredReciboData | null => {
+        if (!data || typeof data !== 'object') return null;
+
+        const recibo = data as Partial<StoredReciboData>;
+        const hasValidData =
+          typeof recibo.emisor === 'string' &&
+          typeof recibo.cliente === 'string' &&
+          typeof recibo.concepto === 'string' &&
+          typeof recibo.monto === 'number' &&
+          Number.isFinite(recibo.monto);
+
+        if (!hasValidData) return null;
+
+        return {
+          emisor: recibo.emisor,
+          cliente: recibo.cliente,
+          monto: recibo.monto,
+          concepto: recibo.concepto,
+          filename: typeof recibo.filename === 'string' ? recibo.filename : undefined,
+        };
+      };
+
+      const renderHistoryItem = (documentId: string, createdAt: Date, recibo: StoredReciboData) => {
+        const item = document.createElement('li');
+        item.className = 'rounded-md border border-[#dfe4d5] bg-white p-3 shadow-sm';
+
+        const row = document.createElement('div');
+        row.className = 'flex items-start justify-between gap-3';
+
+        const content = document.createElement('div');
+        content.className = 'min-w-0';
+
+        const title = document.createElement('p');
+        title.className = 'truncate text-sm font-bold text-[#151812]';
+        title.textContent = `${recibo.cliente} · ${recibo.concepto}`;
+
+        const meta = document.createElement('p');
+        meta.className = 'mt-1 text-xs leading-5 text-[#66705f]';
+        meta.textContent = formatReceiptDate(createdAt);
+
+        const amount = document.createElement('p');
+        amount.className = 'mt-2 text-sm font-bold text-[#25636f]';
+        amount.textContent = formatMoney(recibo.monto);
+
+        const button = document.createElement('button');
+        button.className = 'btn-redescargar flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[#cfd7c6] bg-[#f9fafb] text-[#25636f] transition hover:bg-[#eef7f4] focus:outline-none focus:ring-4 focus:ring-[#25636f]/15';
+        button.type = 'button';
+        button.dataset.id = documentId;
+        button.setAttribute('aria-label', `Redescargar recibo de ${recibo.cliente}`);
+        button.innerHTML = `
+          <svg aria-hidden="true" class="pointer-events-none h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <path d="M7 10l5 5 5-5"></path>
+            <path d="M12 15V3"></path>
+          </svg>
+        `;
+
+        content.append(title, meta, amount);
+        row.append(content, button);
+        item.append(row);
+
+        return item;
+      };
+
+      const loadReceiptHistory = async () => {
+        if (!historyList || !historyEmptyState) return;
+
+        const documents = await db.documents
+          .orderBy('createdAt')
+          .reverse()
+          .filter((document) => document.type === 'recibo')
+          .limit(5)
+          .toArray();
+
+        historyList.replaceChildren();
+
+        documents.forEach((document) => {
+          const recibo = getStoredReciboData(document.data);
+          if (!recibo) return;
+          historyList.append(renderHistoryItem(document.id, new Date(document.createdAt), recibo));
+        });
+
+        const hasHistory = historyList.children.length > 0;
+        historyList.classList.toggle('hidden', !hasHistory);
+        historyEmptyState.classList.toggle('hidden', hasHistory);
+      };
+
+      const redownloadReceipt = async (documentId: string) => {
+        const savedDocument = await db.documents.get(documentId);
+        const recibo = getStoredReciboData(savedDocument?.data);
+
+        if (!savedDocument || !recibo) {
+          setStatus('No se pudo encontrar ese recibo en tu historial local.', true);
+          return;
+        }
+
+        const pdfBytes = await generateReciboPDF(recibo);
+        const filename = recibo.filename ?? `recibo-${new Date(savedDocument.createdAt).toISOString().slice(0, 10)}.pdf`;
+
+        downloadPDF(pdfBytes, filename);
+        setStatus('Recibo recuperado desde tu historial local.');
       };
 
       const loadAdSense = () =>
@@ -452,6 +588,24 @@ import '../styles/global.css';
         installAppButton.classList.add('hidden');
       });
 
+      historyList?.addEventListener('click', async (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>('.btn-redescargar');
+        const documentId = button?.dataset.id;
+
+        if (!documentId) return;
+
+        button.disabled = true;
+
+        try {
+          await redownloadReceipt(documentId);
+        } catch (error) {
+          console.error(error);
+          setStatus('No se pudo redescargar el recibo. Intenta nuevamente.', true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
       form?.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -493,6 +647,7 @@ import '../styles/global.css';
           });
 
           form.reset();
+          await loadReceiptHistory();
           setStatus('Recibo descargado y guardado en tu historial local.');
         } catch (error) {
           console.error(error);
@@ -504,9 +659,13 @@ import '../styles/global.css';
       });
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeAds, { once: true });
+        document.addEventListener('DOMContentLoaded', () => {
+          initializeAds();
+          loadReceiptHistory().catch((error) => console.error('No se pudo cargar el historial local:', error));
+        }, { once: true });
       } else {
         initializeAds();
+        loadReceiptHistory().catch((error) => console.error('No se pudo cargar el historial local:', error));
       }
     </script>
   </body>
