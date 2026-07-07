@@ -43,7 +43,7 @@ import '../styles/global.css';
   <body class="flex min-h-screen flex-col bg-[#f7f7f8] text-[#161713] antialiased">
     <main class="mx-auto grid w-full max-w-[95%] flex-1 grid-cols-1 items-start gap-8 py-4 lg:grid-cols-[300px_1fr_300px] xl:max-w-[1440px]">
       <aside
-        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex relative"
+        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:my-12 lg:flex relative"
         data-ad-container
         data-ad-label="Anuncio Patrocinado - 300x600"
         data-ad-format-label="300x600"
@@ -77,7 +77,7 @@ import '../styles/global.css';
           📲 Instalar App de Recibos
         </button>
 
-        <div class="my-2 block w-full px-4 text-center lg:hidden">
+        <div class="my-8 block w-full px-4 text-center lg:my-12 lg:hidden">
           <div
             class="relative mx-auto flex h-[50px] w-full max-w-[320px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white"
             data-ad-container
@@ -264,10 +264,39 @@ import '../styles/global.css';
             </section>
           </div>
         </section>
+
+        <section id="guia-recibos" class="mt-8 rounded-lg border border-[#dfe4d5] bg-white p-5 shadow-sm sm:p-7 lg:mt-12" aria-labelledby="guia-recibos-title">
+          <p class="text-xs font-bold uppercase text-[#25636f]">Guia de uso y preguntas frecuentes</p>
+          <h2 id="guia-recibos-title" class="mt-2 text-2xl font-bold leading-tight text-[#151812]">
+            Guia de Uso y Preguntas Frecuentes sobre el Generador de Recibos
+          </h2>
+          <div class="mt-6 space-y-6 text-sm leading-7 text-[#596154] sm:text-base">
+            <article>
+              <h3 class="text-lg font-bold text-[#151812]">Como generar un recibo de pago profesional en PDF en segundos</h3>
+              <p class="mt-2">
+                Para crear un comprobante con CalculaYa solo necesitas completar los campos principales del formulario. En Emisor escribe tu nombre, el nombre de tu negocio o la razon comercial que entrega el recibo. En Cliente coloca la persona o empresa que realiza el pago, de forma que el documento quede claro para ambas partes. El campo Monto acepta valores numericos con decimales, ideal para registrar pagos completos, abonos, servicios por hora o entregas parciales. En Concepto describe el servicio, producto, reparacion, asesoria, alquiler o cualquier detalle que explique por que se emitio el pago. Al presionar Descargar PDF, la aplicacion genera un archivo listo para guardar, imprimir, enviar por WhatsApp, compartir por correo o adjuntar a tu control administrativo. El historial local tambien te permite volver a descargar comprobantes recientes sin tener que llenar todo desde cero.
+              </p>
+            </article>
+
+            <article>
+              <h3 class="text-lg font-bold text-[#151812]">Es seguro utilizar esta herramienta para mis comprobantes</h3>
+              <p class="mt-2">
+                Si. La herramienta esta pensada para funcionar con privacidad total: los datos que escribes en el formulario se procesan localmente en tu propio dispositivo. CalculaYa no exige registro, no pide contrasena y no envia el contenido de tus recibos a servidores externos para crear el PDF. El nombre del emisor, el cliente, el monto y el concepto se usan en el navegador para armar el documento y, cuando decides conservar el historial, se guardan en almacenamiento local del mismo equipo o telefono. Esto es util para freelancers, pequenos comercios, tecnicos, repartidores, profesionales independientes y cualquier persona que necesite emitir comprobantes simples sin exponer informacion sensible en plataformas innecesarias. Como buena practica, revisa los datos antes de descargar el PDF y protege el dispositivo donde conservas tu historial.
+              </p>
+            </article>
+
+            <article>
+              <h3 class="text-lg font-bold text-[#151812]">Puedo usar la aplicacion sin conexion a Internet</h3>
+              <p class="mt-2">
+                CalculaYa incluye soporte offline mediante tecnologia PWA, por lo que puede seguir abriendo y trabajando en condiciones donde la conexion sea limitada o inestable. Despues de visitar la pagina e instalar la app desde el navegador compatible, los archivos esenciales quedan disponibles para que puedas generar recibos aunque estes en la calle, dentro de un local con mala senal, en una visita tecnica o atendiendo clientes lejos de una red confiable. Esta capacidad es especialmente practica para comerciantes que cobran en sitio, trabajadores independientes que entregan servicios a domicilio y equipos pequenos que necesitan documentar pagos al momento. Algunas funciones externas, como la carga de anuncios o recursos de terceros, pueden requerir Internet, pero el flujo principal para completar datos, generar el recibo y mantener un historial local esta disenado para continuar funcionando desde el dispositivo.
+              </p>
+            </article>
+          </div>
+        </section>
       </div>
 
       <aside
-        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:flex relative"
+        class="sticky top-24 hidden h-[600px] w-[300px] items-center justify-center overflow-hidden rounded-lg border border-[#e1e5df] bg-white lg:my-12 lg:flex relative"
         data-ad-container
         data-ad-label="Anuncio Patrocinado - 300x600"
         data-ad-format-label="300x600"
@@ -283,16 +312,24 @@ import '../styles/global.css';
       </aside>
     </main>
 
-    <footer class="border-t border-[#dfe4d5] bg-white px-4 py-4 text-center text-xs font-semibold text-[#596154]">
-      Imaginado y Desarrollado por{' '}
-      <a
-        class="text-[#25636f] underline-offset-4 hover:underline"
-        href="https://josuethacevedo.online"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Joe Codex ❤️
-      </a>
+    <footer class="border-t border-[#dfe4d5] bg-white px-4 py-6 text-sm text-[#596154]">
+      <div class="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
+        <p>
+          &copy; 2026 CalculaYa.online. Herramientas simples para comprobantes digitales.
+        </p>
+        <nav class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-semibold" aria-label="Enlaces legales">
+          <a class="text-[#25636f] underline-offset-4 hover:underline" href="/privacidad">Politica de Privacidad</a>
+          <a class="text-[#25636f] underline-offset-4 hover:underline" href="/terminos">Terminos de Servicio</a>
+          <a
+            class="text-[#25636f] underline-offset-4 hover:underline"
+            href="https://josuethacevedo.online"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Desarrollado por Joe Codex
+          </a>
+        </nav>
+      </div>
     </footer>
 
     <script>

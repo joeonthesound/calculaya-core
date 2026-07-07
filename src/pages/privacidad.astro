@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="Politica de privacidad de CalculaYa: uso local de datos, almacenamiento IndexedDB y anuncios de Google AdSense."
+    />
+    <title>Politica de Privacidad | CalculaYa</title>
+  </head>
+  <body class="min-h-screen bg-[#f7f7f8] text-[#161713] antialiased">
+    <main class="mx-auto w-full max-w-3xl px-4 py-10 sm:py-14">
+      <a class="text-sm font-bold text-[#25636f] underline-offset-4 hover:underline" href="/">Volver a CalculaYa</a>
+
+      <article class="mt-6 rounded-lg border border-[#dfe4d5] bg-white p-6 shadow-sm sm:p-8">
+        <p class="text-xs font-bold uppercase text-[#25636f]">Informacion legal</p>
+        <h1 class="mt-2 text-3xl font-bold leading-tight text-[#151812]">Politica de Privacidad</h1>
+        <p class="mt-3 text-sm leading-6 text-[#66705f]">Ultima actualizacion: 6 de julio de 2026</p>
+
+        <div class="mt-8 space-y-6 text-sm leading-7 text-[#596154] sm:text-base">
+          <section>
+            <h2 class="text-xl font-bold text-[#151812]">Datos que escribes en la herramienta</h2>
+            <p class="mt-2">
+              CalculaYa permite generar recibos de pago en PDF desde el navegador. La aplicacion no recopila datos personales, no solicita registro y no almacena en servidores externos la informacion que escribes en el formulario, como emisor, cliente, monto o concepto. Esos datos se procesan localmente en tu dispositivo para crear el comprobante.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-[#151812]">Almacenamiento local e IndexedDB</h2>
+            <p class="mt-2">
+              Si usas el historial de recibos, la informacion queda guardada en almacenamiento local del navegador mediante IndexedDB. Este almacenamiento pertenece al dispositivo y navegador que utilizas. Puedes borrar esos datos limpiando el almacenamiento del sitio desde la configuracion de tu navegador.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-[#151812]">Google AdSense y cookies</h2>
+            <p class="mt-2">
+              CalculaYa implementa Google AdSense para mostrar anuncios. Google y sus socios pueden usar cookies, identificadores del dispositivo u otras tecnologias similares para servir anuncios basados en visitas anteriores de los usuarios a este u otros sitios web, medir rendimiento y prevenir abusos. La gestion de esas cookies depende de la configuracion del navegador y de las opciones de privacidad ofrecidas por Google.
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-[#151812]">Contacto</h2>
+            <p class="mt-2">
+              Para consultas sobre esta politica, puedes visitar el sitio del desarrollador enlazado desde el pie de pagina de CalculaYa.
+            </p>
+          </section>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
